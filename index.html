@@ -71,32 +71,47 @@
         const installBtn = document.getElementById('installBtn');
         const dismissBtn = document.getElementById('dismissBtn');
 
+        // Vérifier si l'app est déjà installée
+        const isAppInstalled = localStorage.getItem('appInstalled') === 'true';
+
+        if (!isAppInstalled) {
+            // Afficher le bandeau après 2 secondes même sans événement (pour test)
+            setTimeout(() => {
+                if (!deferredPrompt) {
+                    installBanner.classList.remove('hidden');
+                    console.log('⚠️ Bandeau affiché sans événement (mode manuel)');
+                }
+            }, 2000);
+        }
+
         // Capturer l'événement beforeinstallprompt
         window.addEventListener('beforeinstallprompt', (e) => {
             console.log('✅ beforeinstallprompt déclenché');
             e.preventDefault();
             deferredPrompt = e;
-            // Afficher le bandeau
             installBanner.classList.remove('hidden');
         });
 
         // Bouton Installer
         installBtn.addEventListener('click', async () => {
-            if (!deferredPrompt) {
-                console.log('❌ Pas de prompt disponible');
-                return;
+            if (deferredPrompt) {
+                // Si l'événement est capturé, utiliser le prompt natif
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`👤 Choix utilisateur: ${outcome}`);
+                deferredPrompt = null;
+
+                if (outcome === 'accepted') {
+                    localStorage.setItem('appInstalled', 'true');
+                    installBanner.classList.add('hidden');
+                }
+            } else {
+                // Sinon afficher les instructions manuelles
+                alert('Pour installer l\'application :\n\n' +
+                    '📱 Android (Chrome) : Menu (⋮) → Installer l\'application\n' +
+                    '🍏 iOS (Safari) : Partager → Sur l\'écran d\'accueil\n' +
+                    '💻 PC (Chrome) : Icône dans la barre d\'adresse');
             }
-
-            // Afficher le prompt natif
-            deferredPrompt.prompt();
-
-            // Attendre la réponse
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`👤 Choix utilisateur: ${outcome}`);
-
-            // Réinitialiser
-            deferredPrompt = null;
-            installBanner.classList.add('hidden');
         });
 
         // Bouton Fermer
@@ -104,9 +119,10 @@
             installBanner.classList.add('hidden');
         });
 
-        // Détecter si déjà installé
+        // Détecter l'installation réussie
         window.addEventListener('appinstalled', () => {
             console.log('✅ App installée !');
+            localStorage.setItem('appInstalled', 'true');
             installBanner.classList.add('hidden');
         });
     </script>
