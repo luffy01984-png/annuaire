@@ -86,16 +86,68 @@ const categories = [
         ]
     },
     {
-        id: 'production',
-        name: 'Production',
+        id: 'uep1',
+        name: 'UEP 1',
         icon: '🏭',
-        manager: { name: 'Sebastien Roy', phone: '+33699900012' },
-        team_leaders: [
-            { name: 'Audrey Colin', phone: '+33600011123' }
-        ],
-        polyvalents: [
-            { name: 'Mathieu Vidal', phone: '+33611122235' }
-        ]
+        manager: { name: 'Chef UEP 1', phone: '+33600000001' },
+        team_leaders: [{ name: 'Team Leader 1', phone: '+33600000011' }],
+        polyvalents: [{ name: 'Polyvalent 1', phone: '+33600000021' }]
+    },
+    {
+        id: 'uep2',
+        name: 'UEP 2',
+        icon: '🏭',
+        manager: { name: 'Chef UEP 2', phone: '+33600000002' },
+        team_leaders: [{ name: 'Team Leader 2', phone: '+33600000012' }],
+        polyvalents: [{ name: 'Polyvalent 2', phone: '+33600000022' }]
+    },
+    {
+        id: 'uep3',
+        name: 'UEP 3',
+        icon: '🏭',
+        manager: { name: 'Chef UEP 3', phone: '+33600000003' },
+        team_leaders: [{ name: 'Team Leader 3', phone: '+33600000013' }],
+        polyvalents: [{ name: 'Polyvalent 3', phone: '+33600000023' }]
+    },
+    {
+        id: 'uep4',
+        name: 'UEP 4',
+        icon: '🏭',
+        manager: { name: 'Chef UEP 4', phone: '+33600000004' },
+        team_leaders: [{ name: 'Team Leader 4', phone: '+33600000014' }],
+        polyvalents: [{ name: 'Polyvalent 4', phone: '+33600000024' }]
+    },
+    {
+        id: 'uep5',
+        name: 'UEP 5',
+        icon: '🏭',
+        manager: { name: 'Chef UEP 5', phone: '+33600000005' },
+        team_leaders: [{ name: 'Team Leader 5', phone: '+33600000015' }],
+        polyvalents: [{ name: 'Polyvalent 5', phone: '+33600000025' }]
+    },
+    {
+        id: 'uep6',
+        name: 'UEP 6',
+        icon: '🏭',
+        manager: { name: 'Chef UEP 6', phone: '+33600000006' },
+        team_leaders: [{ name: 'Team Leader 6', phone: '+33600000016' }],
+        polyvalents: [{ name: 'Polyvalent 6', phone: '+33600000026' }]
+    },
+    {
+        id: 'uep7',
+        name: 'UEP 7',
+        icon: '🏭',
+        manager: { name: 'Chef UEP 7', phone: '+33600000007' },
+        team_leaders: [{ name: 'Team Leader 7', phone: '+33600000017' }],
+        polyvalents: [{ name: 'Polyvalent 7', phone: '+33600000027' }]
+    },
+    {
+        id: 'uep8',
+        name: 'UEP 8',
+        icon: '🏭',
+        manager: { name: 'Chef UEP 8', phone: '+33600000008' },
+        team_leaders: [{ name: 'Team Leader 8', phone: '+33600000018' }],
+        polyvalents: [{ name: 'Polyvalent 8', phone: '+33600000028' }]
     },
     {
         id: 'quality',
