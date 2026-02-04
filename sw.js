@@ -1,4 +1,4 @@
-const CACHE_NAME = 'annuaire-v5';
+const CACHE_NAME = 'annuaire-v6';
 const ASSETS = [
     './',
     './index.html',
