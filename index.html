@@ -19,6 +19,10 @@
     </div>
 
     <header id="mainHeader">
+        <button id="installAppBtn" class="hidden"
+            style="position: absolute; right: 1rem; top: 1rem; background: #00f260; color: black; border: none; padding: 0.5rem 1rem; border-radius: 20px; font-weight: bold; cursor: pointer;">
+            Installer ⬇️
+        </button>
         <h1>Annuaire</h1>
         <p class="subtitle">Contacts Rapides</p>
     </header>
@@ -41,11 +45,37 @@
     <link rel="apple-touch-icon" href="icon-192.png">
 
     <script>
+        // Service Worker
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js')
-                .then(reg => console.log('Service Worker Registered'))
-                .catch(err => console.log('Service Worker Error', err));
+            navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
         }
+
+        // Bouton Installer Manuel
+        let deferredPrompt;
+        const installBtn = document.getElementById('installAppBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Empêcher le bandeau natif automatique (pour le contrôler nous-mêmes) ou le laisser
+            e.preventDefault();
+            deferredPrompt = e;
+            // AFFICHER notre bouton
+            installBtn.classList.remove('hidden');
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    deferredPrompt = null;
+                    installBtn.classList.add('hidden');
+                }
+            }
+        });
+
+        window.addEventListener('appinstalled', () => {
+            installBtn.classList.add('hidden');
+        });
     </script>
     <script src="data.js"></script>
     <script type="module" src="script.js"></script>
