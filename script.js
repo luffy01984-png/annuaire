@@ -1,4 +1,4 @@
-import { categories } from './data.js';
+// Categories are loaded from data.js
 
 const categoryGrid = document.getElementById('categoryGrid');
 const detailView = document.getElementById('detailView');
