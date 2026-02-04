@@ -52,7 +52,11 @@
         // Service Worker Registration
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
-                .then(() => console.log('Service Worker Registered'))
+                .then((reg) => {
+                    console.log('Service Worker Registered');
+                    // Force la mise à jour
+                    reg.update();
+                })
                 .catch((err) => console.log('Service Worker Failed', err));
         }
 
@@ -72,9 +76,14 @@
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
-                console.log(`User response to the install prompt: ${outcome}`);
+                console.log(`User response: ${outcome}`);
                 deferredPrompt = null;
                 installBanner.classList.add('hidden');
+            } else {
+                // Si pas de prompt disponible, afficher un message
+                alert('Pour installer l\'application :\n\n' +
+                    'Sur Chrome/Edge : Menu (⋮) → Installer l\'application\n' +
+                    'Sur Safari iOS : Partager → Sur l\'écran d\'accueil');
             }
         });
 
