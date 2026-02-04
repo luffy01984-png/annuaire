@@ -82,7 +82,13 @@ function resetView() {
 
 // Go Back
 function goBack() {
-    history.back();
+    // Si on a un état dans l'historique, utiliser history.back()
+    // Sinon, réinitialiser la vue directement
+    if (window.history.length > 1 && window.history.state) {
+        history.back();
+    } else {
+        resetView();
+    }
 }
 
 // Handle Browser Back Button
