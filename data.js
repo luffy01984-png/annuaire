@@ -1,4 +1,4 @@
-export const categories = [
+const categories = [
     {
         id: 'management',
         name: 'Direction',
