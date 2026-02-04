@@ -35,18 +35,80 @@
 
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0f0f13">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Annuaire">
+    <link rel="apple-touch-icon" href="icon-192.png">
+
+    <!-- Bandeau d'installation -->
+    <div id="installBanner" class="install-banner hidden">
+        <div class="banner-content">
+            <div class="banner-text">
+                <h3>📱 Installer l'application</h3>
+                <p>Accès rapide depuis votre écran d'accueil</p>
+            </div>
+            <div class="banner-actions">
+                <button id="dismissBtn" class="btn-dismiss">Plus tard</button>
+                <button id="installBtn" class="btn-install">Installer</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // Service Worker Registration
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')
                 .then((reg) => {
-                    console.log('Service Worker Registered');
-                    // Force la mise à jour
+                    console.log('✅ Service Worker enregistré');
                     reg.update();
                 })
-                .catch((err) => console.log('Service Worker Failed', err));
+                .catch((err) => console.error('❌ Service Worker échoué:', err));
         }
+
+        // Installation PWA
+        let deferredPrompt = null;
+        const installBanner = document.getElementById('installBanner');
+        const installBtn = document.getElementById('installBtn');
+        const dismissBtn = document.getElementById('dismissBtn');
+
+        // Capturer l'événement beforeinstallprompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('✅ beforeinstallprompt déclenché');
+            e.preventDefault();
+            deferredPrompt = e;
+            // Afficher le bandeau
+            installBanner.classList.remove('hidden');
+        });
+
+        // Bouton Installer
+        installBtn.addEventListener('click', async () => {
+            if (!deferredPrompt) {
+                console.log('❌ Pas de prompt disponible');
+                return;
+            }
+
+            // Afficher le prompt natif
+            deferredPrompt.prompt();
+
+            // Attendre la réponse
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`👤 Choix utilisateur: ${outcome}`);
+
+            // Réinitialiser
+            deferredPrompt = null;
+            installBanner.classList.add('hidden');
+        });
+
+        // Bouton Fermer
+        dismissBtn.addEventListener('click', () => {
+            installBanner.classList.add('hidden');
+        });
+
+        // Détecter si déjà installé
+        window.addEventListener('appinstalled', () => {
+            console.log('✅ App installée !');
+            installBanner.classList.add('hidden');
+        });
     </script>
     <script src="data.js"></script>
     <script type="module" src="script.js"></script>
