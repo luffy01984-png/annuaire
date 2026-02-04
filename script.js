@@ -23,10 +23,13 @@ function renderCategories() {
 
 // Show Category Detail
 function showCategory(category) {
-    categoryGrid.classList.add('hidden');
-    mainHeader.classList.add('hidden');
-    backNav.style.display = 'block';
-    detailView.style.display = 'block';
+    history.pushState({ view: 'detail', category: category.name }, '', '#detail');
+    updateView();
+    renderCategoryDetail(category);
+}
+
+// Render Category Detail Content
+function renderCategoryDetail(category) {
     window.scrollTo(0, 0);
 
     let content = `
@@ -61,28 +64,40 @@ function showCategory(category) {
     detailView.innerHTML = content;
 }
 
-// Create Contact Card HTML
-function createContactCard(contact) {
-    return `
-        <a href="tel:${contact.phone}" class="contact-card">
-            <div class="contact-info">
-                <h3>${contact.name}</h3>
-                <span>${contact.phone}</span>
-            </div>
-            <div class="call-icon">
-                <svg viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 0 0-1.01.24l-2.2 2.2a15.053 15.053 0 0 1-6.59-6.59l2.2-2.21c.28-.26.36-.65.25-1.01A11.36 11.36 0 0 1 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 15.12 15.12 0 0 0 16 16c.55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1zM12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
-            </div>
-        </a>
-    `;
+// Update View based on state
+function updateView() {
+    categoryGrid.classList.add('hidden');
+    mainHeader.classList.add('hidden');
+    backNav.style.display = 'block';
+    detailView.style.display = 'block';
 }
 
-// Go Back
-function goBack() {
+// Reset View to Home
+function resetView() {
     detailView.style.display = 'none';
     backNav.style.display = 'none';
     categoryGrid.classList.remove('hidden');
     mainHeader.classList.remove('hidden');
 }
+
+// Go Back
+function goBack() {
+    history.back();
+}
+
+// Handle Browser Back Button
+window.addEventListener('popstate', (event) => {
+    if (event.state && event.state.view === 'detail') {
+        // Should usually be handled by pushState, but if navigating forward
+        const category = categories.find(c => c.name === event.state.category);
+        if (category) {
+            updateView();
+            renderCategoryDetail(category);
+        }
+    } else {
+        resetView();
+    }
+});
 
 backBtn.addEventListener('click', goBack);
 
