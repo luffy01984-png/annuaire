@@ -1,4 +1,4 @@
-const CACHE_NAME = 'annuaire-v3';
+const CACHE_NAME = 'annuaire-v3.1.1';
 const ASSETS = [
     './',
     './index.html',
@@ -38,3 +38,4 @@ self.addEventListener('fetch', (event) => {
             .then((response) => response || fetch(event.request))
     );
 });
+
